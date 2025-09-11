@@ -1,43 +1,73 @@
-# BlueBuild Template &nbsp; [![bluebuild build badge](https://github.com/blue-build/template/actions/workflows/build.yml/badge.svg)](https://github.com/blue-build/template/actions/workflows/build.yml)
+# Metis II
 
-See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
+An atomic distro for an audience of one (me). Based on BlueBuild. 
 
-After setup, it is recommended you update this README to describe your custom image.
+> [!WARNING]
+> This image is made for my own personal use. If you choose to use this for whatever reason, I
+> cannot help you if something breaks.
 
-## Installation
+## Further Links
 
-> [!WARNING]  
-> [This is an experimental feature](https://www.fedoraproject.org/wiki/Changes/OstreeNativeContainerStable), try at your own discretion.
+- The original [blue-build/template README](/docs/old-readme.md) for reference.
+- The precursor system, [Metis](https://github.com/jahinzee/metis).
 
-To rebase an existing atomic Fedora installation to the latest build:
+## Usage
 
-- First rebase to the unsigned image, to get the proper signing keys and policies installed:
+### Rebasing to Metis
+
+ISO building is very flaky at the moment, so we'll be using the good ol' "rebase from another
+install" method.
+
+1. Install another Fedora Atomic or Universal Blue image, I recommend [Kinoite][] for optimal
+   rebasing.
+
+> [!NOTE]
+> If you are rebasing from Kinoite, there's a chance there may be some Flatpaks preinstall that
+> overlap with the base images' apps. You should remove them before continuing:
+> ```sh
+> flatpak list --columns=application | xargs flatpak uninstall -y
+> ```
+> You can manually (re)add any Flatpak you want after you rebase.
+
+1. Open Konsole and run this command to rebase to the unsigned variant of this image (we'll
+   re-rebase to the signed one later, but we have to go unsigned for a moment.)
+   ```sh
+   rpm-ostree rebase ostree-unverified-registry:ghcr.io/jahinzee/metis
+   ```
+2. Reboot the system.
+   ```sh
+   systemctl reboot # or use the power options from the desktop.
+   ```
+3. Open Konsole again and run this command to now rebase onto the signed variant.
+   ```sh
+   rpm-ostree rebase ostree-image-signed:docker://ghcr.io/jahinzee/metis
+   ```
+4. Reboot once again.
+
+
+### Post-Install Notes
+
+- You can switch your default shell to `fish` with `usermod` (`chsh` is not installed):
+  ```sh
+  sudo usermod --shell /bin/fish "$(whoami)"
   ```
-  rpm-ostree rebase ostree-unverified-registry:ghcr.io/blue-build/template:latest
-  ```
-- Reboot to complete the rebase:
-  ```
-  systemctl reboot
-  ```
-- Then rebase to the signed image, like so:
-  ```
-  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/blue-build/template:latest
-  ```
-- Reboot again to complete the installation
-  ```
-  systemctl reboot
-  ```
 
-The `latest` tag will automatically point to the latest build. That build will still always use the Fedora version specified in `recipe.yml`, so you won't get accidentally updated to the next major version.
+- For proper IME support, open the *Virtual Keyboard* page in System Settings, and select and apply
+  *Fcitx 5 Wayland Launcher (Experimental)*. Afterwards, log out and log in again to activate the
+  IME.
 
-## ISO
+- `pipx` requires additional user-level shell support to access installed packages. This is easily
+  done with this command:
+  ```sh
+  pipx ensurepath
+  ```
+  This will work for both Bash and Fish.
 
-If build on Fedora Atomic, you can generate an offline ISO with the instructions available [here](https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso). These ISOs cannot unfortunately be distributed on GitHub for free due to large sizes, so for public projects something else has to be used for hosting.
+- Enable the Syncthing service for your current user with:
+  ```sh
+  systemctl enable "syncthing@$(whoami).service" --now
+  ```
+  Alternatively, create an Autostart entry in System Settings.
 
-## Verification
 
-These images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](https://github.com/sigstore/cosign). You can verify the signature by downloading the `cosign.pub` file from this repo and running the following command:
-
-```bash
-cosign verify --key cosign.pub ghcr.io/blue-build/template
-```
+[Kinoite]: https://fedoraproject.org/atomic-desktops/kinoite/

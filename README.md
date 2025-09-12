@@ -22,7 +22,7 @@ install" method.
    rebasing.
 
 > [!NOTE]
-> If you are rebasing from Kinoite, there's a chance there may be some Flatpaks preinstall that
+> If you are rebasing from Kinoite, there's a chance there may be some Flatpaks preinstalled that
 > overlap with the base images' apps. You should remove them before continuing:
 > ```sh
 > flatpak list --columns=application | xargs flatpak uninstall -y
@@ -32,7 +32,7 @@ install" method.
 1. Open Konsole and run this command to rebase to the unsigned variant of this image (we'll
    re-rebase to the signed one later, but we have to go unsigned for a moment.)
    ```sh
-   rpm-ostree rebase ostree-unverified-registry:ghcr.io/jahinzee/metis
+   rpm-ostree rebase ostree-unverified-registry:ghcr.io/jahinzee/metis-ii
    ```
 2. Reboot the system.
    ```sh
@@ -40,7 +40,7 @@ install" method.
    ```
 3. Open Konsole again and run this command to now rebase onto the signed variant.
    ```sh
-   rpm-ostree rebase ostree-image-signed:docker://ghcr.io/jahinzee/metis
+   rpm-ostree rebase ostree-image-signed:docker://ghcr.io/jahinzee/metis-ii
    ```
 4. Reboot once again.
 

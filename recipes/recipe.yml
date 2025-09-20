@@ -12,6 +12,7 @@ modules:
   #  ··· Branding
   #      + replace Fedora logos with generic logos
   #      + apply "Metis II" branding
+  #      + regenerate initramfs to display generic logos on boot screen
   - type: script
     # Using the manual dnf command here since BlueBuild's `dnf` module doesn't support package
     # swapping, and doing a two-step install/remove will also nuke the KDE Plasma desktop.
@@ -26,6 +27,7 @@ modules:
       DOCUMENTATION_URL: https://github.com/jahinzee/metis-ii/blob/main/README.md
       SUPPORT_URL: https://github.com/jahinzee/metis-ii/issues
       BUG_REPORT_URL: https://github.com/jahinzee/metis-ii/issues
+  - type: initramfs
 
   # ————————————————————————————————————————————————
   #  ··· Packages: KDE Applications
@@ -155,3 +157,9 @@ modules:
       packages: [zen-browser]
 
   - type: signing
+
+  # ————————————————————————————————————————————————
+  #  ··· Extern: KAdwSettings
+  #      + install KAdwSettings (manually) and through dependencies
+  - type: script
+    scripts: [install-kadwsettings.sh]

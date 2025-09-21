@@ -82,6 +82,7 @@ modules:
         - starship
         - topgrade
         - vim
+        - vim-X11 # for gvim
         - zoxide
 
   # ————————————————————————————————————————————————

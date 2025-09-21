@@ -1,5 +1,5 @@
 #!/bin/bash
-set -oue pipefail
+set -ouex pipefail
 
 SOURCE_REPO="https://github.com/Hou-Rui/kadwsettings"
 

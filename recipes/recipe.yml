@@ -84,6 +84,8 @@ modules:
         - vim
         - vim-X11 # for gvim
         - zoxide
+        - podman-compose
+        - podman-docker
 
   # ————————————————————————————————————————————————
   #  ··· Homebrew
@@ -157,10 +159,19 @@ modules:
     install:
       packages: [zen-browser]
 
-  - type: signing
+  # ————————————————————————————————————————————————
+  #  ··· Extern: KAdwSettings (deps only)
+  #      + install runtime dependencies for KAdwSettings
+  - type: dnf
+    install:
+      packages:
+        - python3
+        - python-pyside6
+        - python3-tinycss2
+        - kf6-kirigami
+        - kf6-kirigami-addons
+        - git
 
   # ————————————————————————————————————————————————
-  #  ··· Extern: KAdwSettings
-  #      + install KAdwSettings (manually) and through dependencies
-  - type: script
-    scripts: [install-kadwsettings.sh]
+  #  ··· Signing
+  - type: signing

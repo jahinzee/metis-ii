@@ -30,8 +30,9 @@ modules:
   - type: initramfs
 
   # ————————————————————————————————————————————————
-  #  ··· Packages: KDE Applications
+  #  ··· Packages: Graphical applications
   #      + install KDE utilities for multimedia and system maintenance
+  #      + install rofi
   - type: dnf
     repos:
       cleanup: true
@@ -53,6 +54,7 @@ modules:
         - merkuro
         - okular
         - plasma-browser-integration
+        - rofi
         - yakuake
 
   # ————————————————————————————————————————————————
